@@ -1,35 +1,22 @@
 const http = require("http");
 require("dotenv").config();
-const getReq = require("./methods/get-request")
-const getPost = require("./methods/post-request")
-const getPut = require("./methods/put-request")
-const getDelete = require("./methods/delete-request")
+const getRoutes = require("./methods/get-request")
+const postRoutes = require("./methods/post-request")
+const putRoutes = require("./methods/put-request")
+const deleteRoutes = require("./methods/delete-request")
+const Router = require("./util/Router");
 
-let movies = require("./data/movie.json")
+
+let movies = require("./data/movies.json")
 
 const PORT = process.env.PORT || 5001;
 
+const router = new Router([getRoutes, postRoutes, deleteRoutes, putRoutes]);
+
 const server = http.createServer((req, res) => {
     req.movies = movies;
-    switch (req.method) {
-        case "GET":
-            getReq(req, res);
-            break;
-        case "POST":
-            getPost(req, res);
-            break;
-        case "PUT":
-            getPut(req, res);
-            break;
-        case "DELETE":
-            getDelete(req, res);
-            break;
-        default:
-            res.statusCode = 404;
-            res.setHeader("Content-Type", "application/json");
-            res.write(JSON.stringify({ title: "Not Found", message: "Route Not Found" }));
-            res.end();
-    }
+    req.params = {};
+    router.use(req, res);
 })
 
 server.listen(PORT, () => {
