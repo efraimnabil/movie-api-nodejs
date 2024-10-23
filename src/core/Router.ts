@@ -1,25 +1,26 @@
 import { IncomingMessage, ServerResponse } from "http";
 
+type Handler = (req: IncomingMessage, res: ServerResponse, next: () => void) => void
+
 interface Endpoint {
     url: string;
-    handlers: Array<(req: IncomingMessage, res: ServerResponse, next: () => void) => void>;
+    handlers: Array<Handler>;
 }
 
 class Router {
     private routes: Map<string, Endpoint[]>;
 
     constructor(routers: Router[] = []) {
-
         const flatRoutes = routers.flatMap(router => [...router.routes.entries()]);
         this.routes = new Map(flatRoutes);
     }
 
-    public use(req: IncomingMessage, res: ServerResponse): void {
+    public async use(req: IncomingMessage, res: ServerResponse) {
         const methodRoutes = this.routes.get(req.method || "");
         if (methodRoutes) {
             for (const endPoint of methodRoutes) {
                 if (this.match(endPoint.url, req)) {
-                    this.runHandlers(endPoint.handlers, req, res);
+                    await this.runHandlers(endPoint.handlers, req, res);
                     return;
                 }
             }
@@ -28,6 +29,26 @@ class Router {
         res.setHeader("Content-Type", "application/json");
         res.write(JSON.stringify({ title: "Not Found", message: "Route Not Found" }));
         res.end();
+    }
+
+    public addMiddleware(middleware: Handler) {
+        for(const route of this.routes){
+            if(route[0] === "GET") continue;
+            route[1].forEach((endPoint) => {
+                endPoint.handlers.unshift(middleware);
+            })
+        }
+    }
+
+    private async runHandlers(handlers: Array<Handler>, req: IncomingMessage, res: ServerResponse) {
+        let index = 0;
+        const next = async () => {
+            if (index < handlers.length) {
+                const handler = handlers[index++];
+                await handler(req, res, next);
+            }
+        };
+        await next();
     }
 
     private match(url: string, req: IncomingMessage): boolean {
@@ -46,37 +67,26 @@ class Router {
         return true;
     }
 
-    private runHandlers(handlers: Array<(req: IncomingMessage, res: ServerResponse, next: () => void) => void>, req: IncomingMessage, res: ServerResponse): void {
-        let index = 0;
-        const next = () => {
-            if (index < handlers.length) {
-                const handler = handlers[index++];
-                handler(req, res, next);
-            }
-        };
-        next();
-    }
-
-    private set(method: string, url: string, handlers: Array<(req: IncomingMessage, res: ServerResponse, next: () => void) => void>): void {
+    private set(method: string, url: string, handlers: Array<Handler>): void {
         if (!this.routes.has(method)) {
             this.routes.set(method, []);
         }
         this.routes.get(method)!.push({ url, handlers });
     }
 
-    public get(url: string, ...handlers: Array<(req: IncomingMessage, res: ServerResponse, next: () => void) => void>): void {
+    public get(url: string, ...handlers: Array<Handler>): void {
         this.set("GET", url, handlers);
     }
 
-    public post(url: string, ...handlers: Array<(req: IncomingMessage, res: ServerResponse, next: () => void) => void>): void {
+    public post(url: string, ...handlers: Array<Handler>): void {
         this.set("POST", url, handlers);
     }
 
-    public put(url: string, ...handlers: Array<(req: IncomingMessage, res: ServerResponse, next: () => void) => void>): void {
+    public put(url: string, ...handlers: Array<Handler>): void {
         this.set("PUT", url, handlers);
     }
 
-    public delete(url: string, ...handlers: Array<(req: IncomingMessage, res: ServerResponse, next: () => void) => void>): void {
+    public delete(url: string, ...handlers: Array<Handler>): void {
         this.set("DELETE", url, handlers);
     }
 }

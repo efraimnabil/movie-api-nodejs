@@ -7,16 +7,19 @@ import putRoutes from './methods/put-request';
 import deleteRoutes from './methods/delete-request';
 import Router from './core/Router';
 import moviesData from '../data/movies.json';
+import bodyParser from './util/body-parser';
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5001;
 const router = new Router([getRoutes, postRoutes, deleteRoutes, putRoutes]);
 
-const server = http.createServer((req: IncomingMessage, res: ServerResponse) => {
+router.addMiddleware(bodyParser);
+
+const server = http.createServer(async (req: IncomingMessage, res: ServerResponse) => {
     req.movies = moviesData;  
-    req.params = {};     
-    router.use(req, res);
+    req.params = {};         
+    await router.use(req, res);
 });
 
 server.listen(PORT, () => {

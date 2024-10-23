@@ -2,14 +2,14 @@ import Router from '../core/Router';
 import { isValidIdMiddleware } from '../validators/common';
 import { IncomingMessage, ServerResponse } from 'http';
 
-function getAllMovies(req: IncomingMessage, res: ServerResponse): void {
+function getAllMovies(req: IncomingMessage, res: ServerResponse) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
     res.write(JSON.stringify(req.movies));  
     res.end();
 }
 
-function getMovieByID(req: IncomingMessage, res: ServerResponse): void {
+function getMovieByID(req: IncomingMessage, res: ServerResponse) {
     const id = req.params.id;  
     const filteredMovie = req.movies.filter((movie) => movie.id === id) || [];
     if (filteredMovie.length > 0) {

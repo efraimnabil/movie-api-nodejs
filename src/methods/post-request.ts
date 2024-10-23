@@ -1,12 +1,11 @@
+import crypto from "crypto";
 import { IncomingMessage, ServerResponse } from "http";
-import writeToFile from "../util/write-to-file";
-import crypto from "crypto"
-import requestBodyParser from "../util/body-parser"
 import Router from "../core/Router";
+import writeToFile from "../util/write-to-file";
 
 async function addMovie(req: IncomingMessage, res: ServerResponse) {
     try {
-        let body = await requestBodyParser(req);
+        const { body } = req;
         body.id = crypto.randomUUID();
         req.movies.push(body);
         writeToFile(req.movies);

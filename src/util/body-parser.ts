@@ -1,27 +1,32 @@
-import { IncomingMessage } from "http";
+import { IncomingMessage, ServerResponse } from 'http';
 
-const parseRequestBody = (request: IncomingMessage): Promise<any> => {
-  return new Promise((resolve, reject) => {
-    try {
-      let body = "";
-      
-      request.on("data", (chunk: Buffer) => {
+const bodyParser = (req: IncomingMessage, res: ServerResponse, next: () => void) => {
+    let body = '';
+
+    req.on('data', chunk => {
         body += chunk.toString();
-      });
+    });
 
-      request.on("end", () => {
-        try {
-          const parsedBody = JSON.parse(body);
-          resolve(parsedBody);
-        } catch (jsonError) {
-          reject(`Error parsing JSON: ${jsonError}`);
+    req.on('end', () => {
+        if (body) {
+            try {
+                req.body = JSON.parse(body);
+                console.log("Parsed Body:", req.body);
+            } catch (error) {
+                console.warn("Invalid JSON, proceeding with empty body");
+                req.body = {};
+            }
+        } else {
+            req.body = {};
         }
-      });
-    } catch (error) {
-      console.error("Error parsing request body:", error);
-      reject(error);
-    }
-  });
+
+        next();
+    });
+
+    req.on('error', () => {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ title: "Bad Request", message: "Error processing body" }));
+    });
 };
 
-export default parseRequestBody;
+export default bodyParser;

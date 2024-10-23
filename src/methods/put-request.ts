@@ -1,14 +1,15 @@
 import { IncomingMessage, ServerResponse } from "http";
-import { isValidIdMiddleware } from "../validators/common"; 
-import writeToFile from "../util/write-to-file";
 import Router from "../core/Router";
-import requestBodyParser from "../util/body-parser"
+import writeToFile from "../util/write-to-file";
+import { isValidIdMiddleware } from "../validators/common";
 
-async function updateMovie(req: IncomingMessage, res: ServerResponse): Promise<void> {
+async function updateMovie(req: IncomingMessage, res: ServerResponse) {
     const id = req.params.id; 
 
     try {
-        const body = await requestBodyParser(req);
+        const body = req.body;
+        console.log(body);
+
         const index = (req as any).movies.findIndex((movie: { id: string }) => {
             return movie.id === id;
         });
@@ -17,7 +18,7 @@ async function updateMovie(req: IncomingMessage, res: ServerResponse): Promise<v
             res.writeHead(404, { "Content-Type": "application/json" });
             res.end(JSON.stringify({ title: "Not Found", message: "Movie Not Found" }));
         } else {
-            (req as any).movies[index] = { id, ...body }; 
+            (req as any).movies[index] = { id, ...body };
             writeToFile((req as any).movies); 
             res.writeHead(200, { "Content-Type": "application/json" });
             res.end(JSON.stringify((req as any).movies));
@@ -31,6 +32,6 @@ async function updateMovie(req: IncomingMessage, res: ServerResponse): Promise<v
 
 const putRouters = new Router();
 
-putRouters.put("/api/movies/:id",isValidIdMiddleware, updateMovie);
+putRouters.put("/api/movies/:id", isValidIdMiddleware, updateMovie);
 
 export default putRouters; 
