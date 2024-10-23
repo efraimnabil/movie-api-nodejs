@@ -6,7 +6,7 @@ import postRoutes from './methods/post-request';
 import putRoutes from './methods/put-request';
 import deleteRoutes from './methods/delete-request';
 import Router from './core/Router';
-import * as moviesData from '../data/movies.json';
+import moviesData from '../data/movies.json';
 
 dotenv.config();
 

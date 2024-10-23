@@ -2,11 +2,6 @@ import Router from '../core/Router';
 import { isValidIdMiddleware } from '../validators/common';
 import { IncomingMessage, ServerResponse } from 'http';
 
-interface Movie {
-    id: string;
-    title: string;
-}
-
 function getAllMovies(req: IncomingMessage, res: ServerResponse): void {
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
