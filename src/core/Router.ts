@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from "http";
+import * as http from 'http';
 
-type Handler = (req: IncomingMessage, res: ServerResponse, next: () => void) => void
+type Handler = (req: IncomingMessage, res: ServerResponse, next: () => void) => void;
 
 interface Endpoint {
     url: string;
@@ -32,11 +33,11 @@ class Router {
     }
 
     public addMiddleware(middleware: Handler) {
-        for(const route of this.routes){
-            if(route[0] === "GET") continue;
+        for (const route of this.routes) {
+            if (route[0] === "GET") continue;
             route[1].forEach((endPoint) => {
                 endPoint.handlers.unshift(middleware);
-            })
+            });
         }
     }
 
@@ -88,6 +89,19 @@ class Router {
 
     public delete(url: string, ...handlers: Array<Handler>): void {
         this.set("DELETE", url, handlers);
+    }
+
+    public startServer(port: number, moviesData: any) {
+        const server = http.createServer(async (req: IncomingMessage, res: ServerResponse) => {
+            req.movies = moviesData;  
+            req.params = {};
+
+            await this.use(req, res);
+        });
+
+        server.listen(port, () => {
+            console.log(`Server started on port: ${port}`);
+        });
     }
 }
 
