@@ -1,14 +1,12 @@
-const Router = require("../util/Router");
-const writeToFile = require("../util/write-to-file");
-const { isValidId } = require("../validators/common");
+import { ServerResponse } from "http";
+import { IncomingMessage } from "http";
+import Router from '../core/Router';
 
-function deleteMovie(req, res) {
+import { isValidIdMiddleware } from "../validators/common"; 
+import writeToFile from "../util/write-to-file";
+
+function deleteMovie(req: IncomingMessage, res: ServerResponse) {
     const id = req.params.id;
-    if (!isValidId(id)) {
-        res.writeHead(400, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ title: "Validation Failed", message: "Id is not valid" }));
-        return;
-    }
     const index = req.movies.findIndex((movie) => {
         return movie.id === id;
     });
@@ -27,6 +25,6 @@ function deleteMovie(req, res) {
 
 const deleteRouters = new Router();
 
-deleteRouters.delete("/api/movies/:id", deleteMovie)
+deleteRouters.delete("/api/movies/:id", isValidIdMiddleware, deleteMovie)
 
-module.exports = deleteRouters
+export default deleteRouters
