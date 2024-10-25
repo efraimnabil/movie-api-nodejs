@@ -2,13 +2,19 @@
 
 ### Overview
 
-This project is a simple RESTful API for managing a collection of movies. It supports basic CRUD operations: fetching all movies, adding new movies, updating existing movies, and deleting movies. The API is built using Node.js and the built-in HTTP module.
+This project is a simple RESTful API for managing a collection of movies. It supports basic CRUD operations: fetching all movies, adding new movies, updating existing movies, and deleting movies. The API is built using Node.js and the express-minimal framework.
 
 ### Features
 - **GET**: Retrieve all movies or a specific movie by ID.
 - **POST**: Add a new movie to the collection.
 - **PUT**: Update an existing movie's details.
 - **DELETE**: Remove a movie from the collection.
+
+### Packages/Dependencies
+
+This project uses the following packages:
+
+- [**express-minimal**](https://www.npmjs.com/package/express-minimal): A minimalistic framework for building web applications in Node.js.
 
 ### Endpoints
 
@@ -20,16 +26,17 @@ This project is a simple RESTful API for managing a collection of movies. It sup
 
 ### Project Structure
 
-- **server.js**: Main server file where requests are routed based on HTTP methods (GET, POST, PUT, DELETE).
-- **methods/**: Directory containing individual request handlers for GET, POST, PUT, and DELETE.
-  - **get-request.js**: Handles retrieving movies.
-  - **post-request.js**: Handles adding new movies.
-  - **put-request.js**: Handles updating movies.
-  - **delete-request.js**: Handles removing movies.
-- **util/**: Directory containing utility functions.
-  - **body-parser.js**: Parses the incoming request body.
-  - **write-to-file.js**: Writes the updated movie list to a JSON file.
-- **data/**: Directory containing the `movies.json` file, which stores the movie data.
+- **src/**: Main source directory for the project.
+  - **server.ts**: Main server file where the application starts.
+  - **routes/**: Contains route handlers for movie-related endpoints.
+    - **movieRoutes.ts**: Handles the logic for fetching, adding, updating, and deleting movies.
+  - **types/**: Contains type definitions for the project.
+    - **index.d.ts**: Extends the IncomingMessage interface to include a movies property.
+  - **util/**: Directory containing utility functions.
+    - **body-parser.ts**: Parses the incoming request body.
+    - **write-to-file.ts**: Writes the updated movie list to a file.
+  - **validators/**: Contains common validation functions.
+    - **common.ts**: Provides validation logic for incoming requests.
 
 ## Movie API Documentation
 
