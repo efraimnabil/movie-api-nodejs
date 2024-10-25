@@ -1,1 +1,58 @@
-[{"title":"The Avengers: End game","year":"2020","genre":"Action, Adventure, Fantasy","rating":"7.9","id":"e2fec764-7a7b-46d6-96d6-de9d3a6dec6b"},{"id":"131c8241-fcae-4425-94b7-e410fb285018","title":"Mission Impossible: Rouge Nation","year":"2015","genre":"Action, Adventure, Fantasy","rating":"7.9"},{"id":"204e28e8-a070-432c-9e8f-82b0f7959132","title":"nnnnnnnnnnn","year":"2010","genre":"Action, Adventure, Fantasy","rating":"7.9"},{"id":"8f458e94-f4bc-4a4d-ab5f-7e61c50c3c2a","title":"mina mina mina mina","year":"2010","genre":"Action, Adventure, Fantasy","rating":"7.9"}]
+[
+    {
+        "id": "e2fec764-7a7b-46d6-96d6-de9d3a6dec6b",
+        "title": "Inception",
+        "year": "2010",
+        "genre": "Action, Sci-Fi, Thriller",
+        "rating": "8.8"
+    },
+    {
+        "id": "131c8241-fcae-4425-94b7-e410fb285018",
+        "title": "Mission Impossible: Rogue Nation",
+        "year": "2015",
+        "genre": "Action, Adventure, Thriller",
+        "rating": "7.4"
+    },
+    {
+        "id": "8f458e94-f4bc-4a4d-ab5f-7e61c50c3c2a",
+        "title": "Interstellar",
+        "year": "2014",
+        "genre": "Adventure, Drama, Sci-Fi",
+        "rating": "8.6"
+    },
+    {
+        "id": "287b7eaa-e3e3-473c-a223-bdd73cae9496",
+        "title": "The Dark Knight",
+        "year": "2008",
+        "genre": "Action, Crime, Drama",
+        "rating": "9.0"
+    },
+    {
+        "id": "aa6ad76a-c79b-496b-a07f-586d73268320",
+        "title": "The Matrix",
+        "year": "1999",
+        "genre": "Action, Sci-Fi",
+        "rating": "8.7"
+    },
+    {
+        "title": "Shutter Island",
+        "year": "2010",
+        "genre": "Mystery, Thriller",
+        "rating": "8.2",
+        "id": "5c3e4011-876d-442b-85f4-ee7e03329c5b"
+    },
+    {
+        "title": "The Shawshank Redemption",
+        "year": "1994",
+        "genre": "Drama",
+        "rating": "9.3",
+        "id": "c215a7d0-dbc7-4657-a39d-b7b7046d4b10"
+    },
+    {
+        "title": "The Godfather",
+        "year": "1972",
+        "genre": "Crime, Drama",
+        "rating": "9.2",
+        "id": "1b8127dc-21c7-4792-8f0b-6c2e77aaca89"
+    }
+]
