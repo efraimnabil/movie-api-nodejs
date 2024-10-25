@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "tsc": "^2.0.4",
+    "express-minimal": "^1.0.18",
     "tsc-watch": "^6.2.0"
   }
 }

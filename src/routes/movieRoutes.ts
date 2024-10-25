@@ -66,6 +66,7 @@ async function updateMovie(req: IncomingMessage, res: ServerResponse) {
         const index = (req as any).movies.findIndex((movie: { id: string }) => {
             return movie.id === id;
         });
+        console.log("req.movies from update", req.movies)
 
         if (index === -1) {
             res.writeHead(404, { "Content-Type": "application/json" });
