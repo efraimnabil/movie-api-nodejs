@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 import { addMovie, deleteMovie, getAllMovies, getMovieByID, updateMovie } from './routes/movieRoutes';
 import { isValidIdMiddleware } from './validators';
 import { IncomingMessage, ServerResponse } from 'http';
-import Router from 'express-minimal';
+import Router from 'eframix';
 import Movies from '../data/movies.json'
 dotenv.config();
 
