@@ -2,7 +2,7 @@
 
 ### Overview
 
-This project is a simple RESTful API for managing a collection of movies. It supports basic CRUD operations: fetching all movies, adding new movies, updating existing movies, and deleting movies. The API is built using Node.js and the express-minimal framework.
+This project is a simple RESTful API for managing a collection of movies. It supports basic CRUD operations: fetching all movies, adding new movies, updating existing movies, and deleting movies. The API is built using Node.js and the Eframix framework.
 
 ### Features
 - **GET**: Retrieve all movies or a specific movie by ID.
@@ -14,7 +14,7 @@ This project is a simple RESTful API for managing a collection of movies. It sup
 
 This project uses the following packages:
 
-- [**express-minimal**](https://www.npmjs.com/package/express-minimal): A minimalistic framework for building web applications in Node.js.
+- [**Eframix**](https://www.npmjs.com/package/eframix): A minimalistic framework for building web applications in Node.js.
 
 ### Endpoints
 
