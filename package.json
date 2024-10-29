@@ -21,8 +21,9 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^8.15.1",
     "dotenv": "^16.4.5",
-    "eframix": "^2.3.0",
+    "eframix": "^2.4.0",
     "tsc-watch": "^6.2.0"
   }
 }

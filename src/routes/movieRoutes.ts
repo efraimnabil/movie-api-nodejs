@@ -1,6 +1,6 @@
-import { ServerResponse } from "http";
-import { IncomingMessage } from "http";
-import writeDataToFile from "../util/write-to-file";
+import { IncomingMessage, ServerResponse } from "http";
+import esClient from '../utils/elasticSearchSetup';
+import writeDataToFile from "../utils/write-to-file";
 
 function getAllMovies(req: IncomingMessage, res: ServerResponse) {
     res.statusCode = 200;
@@ -84,4 +84,30 @@ async function updateMovie(req: IncomingMessage, res: ServerResponse) {
     }
 }
 
-export {getAllMovies, getMovieByID, addMovie, deleteMovie, updateMovie}
+async function searchMovies(req: IncomingMessage, res: ServerResponse) {
+    const { query } = req.query;
+
+    try {
+        const response = await esClient.search({
+            index: 'movies',
+            body: {
+                query: {
+                    multi_match: {
+                        query,
+                        fields: ['title', 'genre', 'year']
+                    }
+                }
+            }
+        });
+
+        const results = response.hits.hits.map(hit => hit._source);
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ results }));
+    } catch (error) {
+        console.error(error);
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "An error occurred during the search" }));
+    }
+}
+
+export { addMovie, deleteMovie, getAllMovies, getMovieByID, searchMovies, updateMovie };
